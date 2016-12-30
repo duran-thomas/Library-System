@@ -70,10 +70,10 @@ def AddBook():
 	available = "Yes"
 	try:
 		bk = open("Book.bat", "a")
-		bk.write(title + " ")
-		bk.write(author + " ")
-		bk.write(str(accession) + " ")
-		bk.write(isbn + " ")
+		bk.write(title + "\n ")
+		bk.write(author + "\n ")
+		bk.write(str(accession) + "\n ")
+		bk.write(isbn + "\n ")
 		bk.write(available )
 	except Exception as e:
 		raise e
@@ -102,15 +102,15 @@ def AddStudent():
 
 	try:
 		stud = open("Student.bat", "a")
-		stud.write(name + " ")
-		stud.write(id + " ")
-		stud.write(faculty + " ")
-		stud.write(contact + " ")
+		stud.write(name + "\n ")
+		stud.write(id + "\n ")
+		stud.write(faculty + "\n ")
+		stud.write(contact + "\n ")
 		stud.write(str(loan))
 		stud.write("\n")
 		stud.close()
 
-	except Exception as e:
+	except Exception as e:\n
 		raise e
 
 	print("Student Record Added")
@@ -134,10 +134,10 @@ def AddTeacher():
 
 	try:
 		teach = open("Teacher.bat", "a")
-		teach.write(name + " ")
-		teach.write(id + " ")
-		teach.write(faculty + " ")
-		teach.write(contact + " ")
+		teach.write(name + "\n ")
+		teach.write(id + "\n ")
+		teach.write(faculty + "\n ")
+		teach.write(contact + "\n ")
 		teach.write("\n")
 		teach.close()
 
