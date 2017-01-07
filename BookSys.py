@@ -69,12 +69,9 @@ def AddBook():
 	isbn = input("ISBN#: ")
 	available = "Yes"
 	try:
-		bk = open("Book.bat", "a")
-		bk.write(title + "\n ")
-		bk.write(author + "\n ")
-		bk.write(str(accession) + "\n ")
-		bk.write(isbn + "\n ")
-		bk.write(available )
+
+		bk = open("Book.bat", "a+")
+		bk.write("%s %s %d %s %s\n" % (title, author, accession, isbn, available))
 	except Exception as e:
 		raise e
 	finally:
@@ -95,23 +92,18 @@ def AddStudent():
 	print("||             Create Student Record             ||")
 	print("  ===============================================\n")
 	name = input("Name: ")
-	id = input("ID#: ")
+	id = int(input("ID#: "))
 	faculty = input("Faculty: ")
 	contact = input("Contact#: ")
 	loan = 0.00
 
 	try:
-		stud = open("Student.bat", "a")
-		stud.write(name + "\n ")
-		stud.write(id + "\n ")
-		stud.write(faculty + "\n ")
-		stud.write(contact + "\n ")
-		stud.write(str(loan))
-		stud.write("\n")
-		stud.close()
-
-	except Exception as e:\n
+		stud = open("Student.bat", "a+")
+		stud.write("%s %d %s %s %.2f\n" % (name, id, faculty, contact, loan))
+	except Exception as e:
 		raise e
+	finally:
+		stud.close()
 
 	print("Student Record Added")
 	choice = input("Add Another? (Y/N)")
@@ -133,21 +125,17 @@ def AddTeacher():
 	contact = input("Contact#: ")
 
 	try:
-		teach = open("Teacher.bat", "a")
-		teach.write(name + "\n ")
-		teach.write(id + "\n ")
-		teach.write(faculty + "\n ")
-		teach.write(contact + "\n ")
-		teach.write("\n")
-		teach.close()
-
+		teach = open("Teacher.bat", "a+")
+		teach.write("%s %d %s %s\n" % (name, id, faculty, contact))
 	except Exception as e:
 		raise e
+	finally:
+		teach.close()
 
 	print("Teacher Record Added")
 	choice = input("Add Another? (Y/N)")
 	if choice == "Y" or choice == "y":
-		AddStudent()
+		AddTeacher()
 	elif choice == "N" or choice == "n":
 		print("Returning To Previous Menu....")
 		time.sleep(2)
@@ -187,20 +175,11 @@ def TeacherAccount():
 def ViewAvailable():
 	os.system('clear')
 	try:
-		bk = open("Book.bat", "r")
-		while True:
-			book = bk.read()
-			titl = book.strip('').split(" ")
-
-			title, author, accession, isbn, available = titl
-			print("Title: " + title)
-			print("Author: " + author)
-			print("Accession#: " + accession)
-			print("ISBN#: " + isbn)
-			print("Available: " + available)
-
-			if ("" == book):	
-			 	break
+		line_number = 0
+		with open('Book.bat') as file:
+			for line in file:
+				line_number += 1
+				print(line_number, line.rstrip())
 
 	except Exception as e:
 		raise e
@@ -221,6 +200,11 @@ def LibrarianAccount():
 	print(" ================================================")
 	choice = int(input("Select Option: "))
 	if choice == 1:
+		BooksOnLoan()
+	elif choice == 2:
+		ViewAvailable()
+	elif choice == 3:
+		CheckBalance()
 		print("Books On Loan")
 	elif choice == 2:
 		ViewAvailable()
@@ -236,6 +220,58 @@ def LibrarianAccount():
 		print("Invalid Choice")
 		Initialize()
 
+def BooksOnLoan():
+	os.system('clear')
+	try:
+		bk = open("Book.bat", "r+")
+		book = bk.readline()
+		titl = book.strip('').split(" ")
+
+		title, author, accession, isbn, available = titl
+		if (available == "No"):
+			print("Title: " + title)
+			print("Author: " + author)
+			print("Accession#: " + accession)
+			print("ISBN#: " + isbn)
+		
+	except Exception as e:
+		raise e
+	finally:
+		bk.close()
+
+def CheckBalance():
+	os.system('clear')
+	print("  ===============================================")
+	print("||           Check Outstanding Balance           ||")
+	print("  ===============================================")
+	print("\n")
+	id=input("Enter Student ID: ")
+
+	with open('Student.bat', 'r') as searchfile:
+	    for line in searchfile:
+	        if id in line:
+	            info = line.strip(' ').split()
+	            fname, lname, idnum, faculty, contactnum, bal = info
+	            continue
+	        else:
+	        	print("Student Record Not Found")
+	os.system('clear')
+	print("  ===============================================")
+	print("||           Check Outstanding Balance           ||")
+	print("  ===============================================")
+	print("\n")
+	print("ID#: " + idnum)
+	print("Name: " + fname, lname)
+	print("Loan Balance: " + bal)
+	print("\n")
 
 
+
+	choice = input("Check Another? (Y/N)")
+	if choice == "Y" or choice == "y":
+		CheckBalance()
+	elif choice == "N" or choice == "n":
+		print("Returning To Previous Menu....")
+		time.sleep(2)
+		LibrarianAccount()
 Menu()
