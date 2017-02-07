@@ -21,7 +21,7 @@ def Menu():
 	elif choice == 2:
 		TeacherAccount()
 	elif choice == 3:
-		print("Student")
+		StudentAccount()
 	elif choice == 4:
 		LibrarianAccount()
 	elif choice == 5:
@@ -52,7 +52,7 @@ def Initialize():
 		AddStudent()
 	elif choice == 4:
 		print("Returning To Main Menu......")
-		time.sleep(2)
+		time.sleep(1)
 		Menu()
 	else:
 		print("Invalid Choice")
@@ -83,7 +83,7 @@ def AddBook():
 		AddBook()
 	elif choice == "N" or choice == "n":
 		print("Returning To Previous Menu....")
-		time.sleep(2)
+		time.sleep(1)
 		Initialize()
 
 def AddStudent():
@@ -111,7 +111,7 @@ def AddStudent():
 		AddStudent()
 	elif choice == "N" or choice == "n":
 		print("Returning To Previous Menu....")
-		time.sleep(2)
+		time.sleep(1)
 		Initialize()
 
 def AddTeacher():
@@ -138,7 +138,7 @@ def AddTeacher():
 		AddTeacher()
 	elif choice == "N" or choice == "n":
 		print("Returning To Previous Menu....")
-		time.sleep(2)
+		time.sleep(1)
 		Initialize()
 
 def TeacherAccount():
@@ -157,7 +157,7 @@ def TeacherAccount():
 	print(" ================================================")
 	choice = int(input("Select Option: "))
 	if choice == 1:
-		print("Borrow Book")
+		BorrowBook()
 	elif choice == 2:
 		print("Search")
 	elif choice == 3:
@@ -166,7 +166,7 @@ def TeacherAccount():
 		print("Return")
 	elif choice == 5:
 		print("Returning To Main Menu......")
-		time.sleep(2)
+		time.sleep(1)
 		Menu()
 	else:
 		print("Invalid Choice")
@@ -214,7 +214,7 @@ def LibrarianAccount():
 		print("Books Status")
 	elif choice == 5:
 		print("Returning To Main Menu......")
-		time.sleep(2)
+		time.sleep(1)
 		Menu()
 	else:
 		print("Invalid Choice")
@@ -227,12 +227,14 @@ def BooksOnLoan():
 		book = bk.readline()
 		titl = book.strip('').split(" ")
 
-		title, author, accession, isbn, available = titl
-		if (available == "No"):
+		title, fauthor, lauthor, accession, isbn, available = titl
+		if (available == "Yes"):
 			print("Title: " + title)
-			print("Author: " + author)
+			print("Author: " + fauthor, lauthor)
 			print("Accession#: " + accession)
 			print("ISBN#: " + isbn)
+		else:
+			print("No Books On Loan")
 		
 	except Exception as e:
 		raise e
@@ -265,13 +267,121 @@ def CheckBalance():
 	print("Loan Balance: " + bal)
 	print("\n")
 
-
-
 	choice = input("Check Another? (Y/N)")
 	if choice == "Y" or choice == "y":
 		CheckBalance()
 	elif choice == "N" or choice == "n":
 		print("Returning To Previous Menu....")
-		time.sleep(2)
+		time.sleep(1)
 		LibrarianAccount()
+
+def BorrowBook():
+	os.system('clear')
+	print("  ===============================================")
+	print("||                  Borrow Book                  ||")
+	print("  ===============================================")
+	print("\n")
+	isbn=input("Enter ISBN#: ")
+
+	with open('Book.bat', 'r') as searchfile:
+	    for line in searchfile:
+	        if isbn in line:
+	            info = line.strip(' ').split()
+	            title, fauthor, lauthor, isbn, accession, available = info
+	            continue
+	        else:
+	        	print("Book Not Found")
+	os.system('clear')
+	print("  ===============================================")
+	print("||                  Borrow Book                  ||")
+	print("  ===============================================")
+	print("\n")
+	print("ISBN#: " + isbn)
+	print("Title: " + title)
+	print("Author: " + fauthor, lauthor)
+	print("Available: " + available)
+	print("\n")
+
+	choice = input("Would You Like To Borrow This Book? (Y/N)")
+	if choice == "Y" or choice == "y":
+		available = "No"
+	elif choice == "N" or choice == "n":
+		print("Returning To Previous Menu....")
+		time.sleep(1)
+		LibrarianAccount()
+
+def StudentAccount():
+	os.system('clear')
+	print("  ===============================================")
+	print("||                Student Account                ||")
+	print("  ===============================================")
+	print("||  Please Select An Option From The Menu Below  ||")
+	print("||                                               ||")
+	print("|| 1. Borrow Book                                ||")
+	print("|| 2. Check Outstanding Balance                  ||")
+	print("|| 3. Make Payments                              ||")
+	print("|| 4. Search For A Book                          ||")
+	print("|| 5. View Books Available                       ||")
+	print("|| 6. Return Books                               ||")
+	print("|| 7. Exit To Main Menu                          ||")
+	print("||                                               ||")
+	print(" ================================================")
+	choice = int(input("Select Option: "))
+	if choice == 1:
+		BorrowBook()
+	elif choice == 2:
+		CheckBalance()
+	elif choice == 3:
+		print("Make Payments")
+	elif choice == 4:
+		SearchBook()
+	elif choice == 5:
+		ViewAvailable()
+	elif choice == 6:
+		print("Return Book")
+	elif choice == 7:
+		print("Returning To Main Menu......")
+		time.sleep(1)
+		Menu()
+	else:
+		print("Invalid Choice")
+		Initialize()
+
+def SearchBook():
+	os.system('clear')
+	print("  ===============================================")
+	print("||                  Search Book                  ||")
+	print("  ===============================================")
+	print("\n")
+	isbn=input("Enter ISBN#: ")
+
+	with open('Book.bat', 'r') as searchfile:
+	    for line in searchfile:
+	        if isbn in line:
+	            info = line.strip(' ').split()
+	            title, fauthor, lauthor, isbn, accession, available = info
+	            continue
+	        else:
+	        	print("Book Not Found")
+
+	os.system('clear')
+	print("  ===============================================")
+	print("||                  Search Book                  ||")
+	print("  ===============================================")
+	print("\n")
+	print("ISBN#: " + isbn)
+	print("Title: " + title)
+	print("Author: " + fauthor, lauthor)
+	print("Available: " + available)
+	print("\n")
+
+	choice = input("Would You Like To Search For Another? (Y/N)")
+	if choice == "Y" or choice == "y":
+		SearchBook()
+	elif choice == "N" or choice == "n":
+		print("Returning To Previous Menu....")
+		time.sleep(1)
+		StudentAccount()
+
+
 Menu()
