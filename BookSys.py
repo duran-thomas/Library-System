@@ -1,5 +1,4 @@
-import os
-import time
+import os, time, json
 
 def Menu():
 	os.system('clear')
@@ -65,13 +64,12 @@ def AddBook():
 	print("  ===============================================\n")
 	title = input("Title: ")
 	author = input("Author: ")
-	accession = int(input("Accession#: "))
+	accession = input("Accession#: ")
 	isbn = input("ISBN#: ")
 	available = "Yes"
 	try:
-
 		bk = open("Book.bat", "a+")
-		bk.write("%s %s %d %s %s\n" % (title, author, accession, isbn, available))
+		bk.write("%s %s %s %s %s\n" % (title, author, accession, isbn, available))
 	except Exception as e:
 		raise e
 	finally:
